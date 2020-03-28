@@ -1181,7 +1181,7 @@ public class Main {
                 JSONArray stocksJSONArray = new JSONArray();
 
                 for(int i = 0; i < stockSymbols.size(); i++) {
-                    String stockSymbol = (String)stockSymbols.get(i);
+                    String stockSymbol = ((String)stockSymbols.get(i)).toUpperCase();
                     Stock stock = null;
 
                     if (dr.getUser(dr.getUserIDForIdentityToken(identityToken)) == null)

@@ -276,7 +276,7 @@ public class Driver {
 
     public void validateStockSymbol(String stockSymbol) throws SQLException, ClassNotFoundException, InvalidIdentifierException {
         PreparedStatement stockExistsPS = connection.prepareStatement("select * from Stock where symbol=?");
-        stockExistsPS.setString(1, stockSymbol);
+        stockExistsPS.setString(1, stockSymbol.toUpperCase());
         ResultSet stockExistsRS = stockExistsPS.executeQuery();
 
         int count = 0;
@@ -286,7 +286,7 @@ public class Driver {
 
     public boolean symbolExists(String symbol) throws SQLException, ClassNotFoundException {
         PreparedStatement stockExistsPS = connection.prepareStatement("select * from Stock where symbol=?");
-        stockExistsPS.setString(1, symbol);
+        stockExistsPS.setString(1, symbol.toUpperCase());
         ResultSet stockExistsRS = stockExistsPS.executeQuery();
 
         while(stockExistsRS.next()) return true;
@@ -295,13 +295,13 @@ public class Driver {
 
     public void createStock(Stock stock) throws SQLException, ClassNotFoundException, DuplicateObjectException {
         PreparedStatement duplicateStockPS = connection.prepareStatement("select * from Stock where symbol=?");
-        duplicateStockPS.setString(1, stock.getSymbol());
+        duplicateStockPS.setString(1, stock.getSymbol().toUpperCase());
         ResultSet duplicateStockRS = duplicateStockPS.executeQuery();
 
         while(duplicateStockRS.next()) throw new DuplicateObjectException("Stock");
 
         PreparedStatement ps = connection.prepareStatement("insert into Stock (symbol, company, lastPrice) values (?,?,?)");
-        ps.setString(1, stock.getSymbol());
+        ps.setString(1, stock.getSymbol().toUpperCase());
         ps.setString(2, stock.getCompany());
         ps.setDouble(3, stock.getLastPrice());
 
@@ -314,14 +314,14 @@ public class Driver {
         PreparedStatement ps = connection.prepareStatement("update Stock set company=?, lastPrice=? where symbol=?");
         ps.setString(1, stock.getCompany());
         ps.setDouble(2, stock.getLastPrice());
-        ps.setString(3, stock.getSymbol());
+        ps.setString(3, stock.getSymbol().toUpperCase());
 
         ps.executeUpdate();
     }
 
     public Stock getStock(String symbol) throws SQLException, ClassNotFoundException, InvalidIdentifierException {
         PreparedStatement ps = connection.prepareStatement("select * from Stock where symbol=?");
-        ps.setString(1, symbol);
+        ps.setString(1, symbol.toUpperCase());
         ResultSet rs = ps.executeQuery();
 
         Stock stock = null;
@@ -330,7 +330,7 @@ public class Driver {
             String company = rs.getString("company");
             double lastPrice = rs.getDouble("lastPrice");
 
-            stock = new Stock(symbol, company, lastPrice);
+            stock = new Stock(symbol.toUpperCase(), company, lastPrice);
         }
 
         if(stock == null) throw new InvalidIdentifierException("Stock Symbol");
@@ -343,18 +343,18 @@ public class Driver {
 
     public void associateSymbolWithWatchlist(String symbol, Watchlist watchlist) throws SQLException, ClassNotFoundException, InvalidIdentifierException, DuplicateIdentifierException {
         validateWatchlist(watchlist);
-        if(!symbolExists(symbol)) throw new InvalidIdentifierException("Stock Symbol");
+        if(!symbolExists(symbol.toUpperCase())) throw new InvalidIdentifierException("Stock Symbol");
 
         PreparedStatement duplicateExistsPS = connection.prepareStatement("select * from WatchlistStock where watchlistID=? and symbol=?");
         duplicateExistsPS.setString(1, watchlist.getWatchlistID());
-        duplicateExistsPS.setString(2, symbol);
+        duplicateExistsPS.setString(2, symbol.toUpperCase());
         ResultSet duplicateExistsRS = duplicateExistsPS.executeQuery();
 
         while(duplicateExistsRS.next()) throw new DuplicateIdentifierException("WatchlistID or Symbol (in AssociateStockWithWatchlist)");
 
         PreparedStatement ps = connection.prepareStatement("insert into WatchlistStock (watchlistID, symbol) values (?,?)");
         ps.setString(1, watchlist.getWatchlistID());
-        ps.setString(2, symbol);
+        ps.setString(2, symbol.toUpperCase());
 
         ps.executeUpdate();
     }
@@ -364,7 +364,7 @@ public class Driver {
 
         PreparedStatement ps = connection.prepareStatement("delete from WatchlistStock where watchlistID=? and symbol=?");
         ps.setString(1, watchlist.getWatchlistID());
-        ps.setString(2, stockSymbol);
+        ps.setString(2, stockSymbol.toUpperCase());
 
         ps.executeUpdate();
     }
@@ -377,7 +377,7 @@ public class Driver {
         ArrayList<Stock> stocks = new ArrayList<Stock>();
 
         while(rs.next()) {
-            String symbol = rs.getString("symbol");
+            String symbol = rs.getString("symbol").toUpperCase();
             String company = rs.getString("company");
             double lastPrice = rs.getDouble("lastPrice");
 
@@ -392,11 +392,11 @@ public class Driver {
 
     public void createAlert(Alert alert) throws SQLException, ClassNotFoundException, InvalidIdentifierException {
         validateUserID(alert.getUserID());
-        validateStockSymbol(alert.getSymbol());
+        validateStockSymbol(alert.getSymbol().toUpperCase());
 
         PreparedStatement ps = connection.prepareStatement("insert into Alert (alertID, symbol, userID, price, overPrice, executed) values (?, ?, ?, ?, ?, ?)");
         ps.setString(1, alert.getAlertID());
-        ps.setString(2, alert.getSymbol());
+        ps.setString(2, alert.getSymbol().toUpperCase());
         ps.setString(3, alert.getUserID());
         ps.setDouble(4, alert.getPrice());
         ps.setBoolean(5, alert.isOverPrice());
@@ -407,10 +407,10 @@ public class Driver {
 
     public ArrayList<Alert> getAlertForStockAndUser(Stock stock, User user) throws SQLException, ClassNotFoundException, InvalidIdentifierException {
         validateUserID(user.getUserID());
-        validateStockSymbol(stock.getSymbol());
+        validateStockSymbol(stock.getSymbol().toUpperCase());
 
         PreparedStatement ps = connection.prepareStatement("select * from Alert where symbol=? and userID=?");
-        ps.setString(1, stock.getSymbol());
+        ps.setString(1, stock.getSymbol().toUpperCase());
         ps.setString(2, user.getUserID());
         ResultSet rs = ps.executeQuery();
 
@@ -418,7 +418,7 @@ public class Driver {
 
         while(rs.next()) {
             String alertID = rs.getString("alertID");
-            String symbol = rs.getString("symbol");
+            String symbol = rs.getString("symbol").toUpperCase();
             String userID = rs.getString("userID");
             double price = rs.getDouble("price");
             boolean overPrice = rs.getBoolean("overPrice");
@@ -441,7 +441,7 @@ public class Driver {
 
         while(rs.next()) {
             String alertID = rs.getString("alertID");
-            String symbol = rs.getString("symbol");
+            String symbol = rs.getString("symbol").toUpperCase();
             String userID = rs.getString("userID");
             double price = rs.getDouble("price");
             boolean overPrice = rs.getBoolean("overPrice");
