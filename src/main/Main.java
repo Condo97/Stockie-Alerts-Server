@@ -852,7 +852,7 @@ public class Main {
 
                 String identityToken = extractString(json, "IdentityToken");
                 String watchlistID = extractString(json, "WatchlistID");
-                String stockSymbol = extractString(json, "StockSymbol");
+                String stockSymbol = extractString(json, "StockSymbol").toUpperCase();
 
                 User user = dr.getUser(dr.getUserIDForIdentityToken(identityToken));
                 Watchlist watchlist = null;
@@ -969,7 +969,7 @@ public class Main {
 
                 String identityToken = extractString(json, "IdentityToken");
                 String watchlistID = extractString(json, "WatchlistID");
-                String stockSymbol = extractString(json, "StockSymbol");
+                String stockSymbol = extractString(json, "StockSymbol").toUpperCase();
 
                 User user = dr.getUser(dr.getUserIDForIdentityToken(identityToken));
                 Watchlist watchlist = null;
@@ -1066,7 +1066,7 @@ public class Main {
                 JSONObject json = (JSONObject) parser.parse(sb.toString());
 
                 String identityToken = extractString(json, "IdentityToken");
-                String stockSymbol = extractString(json, "StockSymbol");
+                String stockSymbol = extractString(json, "StockSymbol").toUpperCase();
                 Stock stock = null;
 
                 if (dr.getUser(dr.getUserIDForIdentityToken(identityToken)) == null)
@@ -1294,7 +1294,7 @@ public class Main {
                 JSONObject json = (JSONObject) parser.parse(sb.toString());
 
                 String identityToken = extractString(json, "IdentityToken");
-                String stockSymbol = extractString(json, "StockSymbol");
+                String stockSymbol = extractString(json, "StockSymbol").toUpperCase();
                 double price = extractDouble(json, "Price");
 
                 User user = dr.getUser(dr.getUserIDForIdentityToken(identityToken));
