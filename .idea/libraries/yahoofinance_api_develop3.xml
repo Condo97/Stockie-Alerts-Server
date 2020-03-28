@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="yahoofinance-api-develop3">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/../yahoofinance-api-develop" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="file://$PROJECT_DIR$/../yahoofinance-api-develop/src/main/java" />
+      <root url="file://$PROJECT_DIR$/../yahoofinance-api-develop/src/test/java" />
+    </SOURCES>
+  </library>
+</component>

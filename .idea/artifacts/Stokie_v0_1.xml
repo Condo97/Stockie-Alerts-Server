@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Stokie_v0.1">
+    <output-path>$PROJECT_DIR$/../_Jars</output-path>
+    <root id="archive" name="Stokie_v0.1.jar">
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/META-INF/MANIFEST.MF" />
+      </element>
+      <element id="module-output" name="Stokie" />
+      <element id="extracted-dir" path="$USER_HOME$/Eclipse/eReceipts/json-simple-1.1.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/YahooFinanceAPI.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/mysql-connector-java-5.1.41-bin.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
