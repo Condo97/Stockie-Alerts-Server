@@ -453,6 +453,15 @@ public class Driver {
         return alerts;
     }
 
+    public void updateAlert(String userID, String alertID, double price) throws SQLException, ClassNotFoundException, InvalidIdentifierException {
+        PreparedStatement ps = connection.prepareStatement("update Alert set price=? where alertID=? and userID=?");
+        ps.setDouble(1, price);
+        ps.setString(2, alertID);
+        ps.setString(3, userID);
+
+        ps.executeUpdate();
+    }
+
     public void removeAlert(Alert alert) throws SQLException, ClassNotFoundException, InvalidIdentifierException {
         PreparedStatement ps = connection.prepareStatement("delete from Alert where alertID=?");
         ps.setString(1, alert.getAlertID());

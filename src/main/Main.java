@@ -1253,6 +1253,7 @@ public class Main {
         }
     }
 
+
     /**
      * AddAlert
      * @author alexcoundouriotis
@@ -1363,6 +1364,98 @@ public class Main {
             os.close();
         }
     }
+
+
+    /**
+     * ModifyAlert
+     * @author alexcoundouriotis
+     *
+     * Functionality:
+     * - Creates a User in the database and returns an Authentication token
+     *
+     * Parameters:
+     * (none)
+     *
+     * POST JSON Contents:
+     * "IdentityToken": User's IdentityToken
+     * "AlertID": The unique identifier representing the Alert
+     * "Price": The updated Price of the Alert
+     *
+     * Response JSON Contents:
+     * "AlertID": The unique identifier representing the Alert
+     * "Price": The updated Price of the Alert
+     * "Error": Integer indicating the error, 0 if success
+     *
+     *
+     */
+    public static class ModifyAlert implements HttpHandler {
+        @Override
+        public void handle(HttpExchange httpsExchange) throws IOException {
+            HttpsExchange t = (HttpsExchange) httpsExchange;
+            JSONObject responseJSON = new JSONObject();
+
+            InputStreamReader isr = new InputStreamReader(t.getRequestBody(), "utf-8");
+            BufferedReader reader = new BufferedReader(isr);
+
+            StringBuilder sb = new StringBuilder();
+            int c;
+            while ((c = reader.read()) != -1) {
+                sb.append((char) c);
+            }
+
+            JSONParser parser = new JSONParser();
+            try {
+                Driver dr = new Driver();
+                JSONObject json = (JSONObject) parser.parse(sb.toString());
+
+                String identityToken = extractString(json, "IdentityToken");
+                String alertID = extractString(json, "AlertID");
+                double price = extractDouble(json, "Price");
+
+                dr.updateAlert(dr.getUserIDForIdentityToken(identityToken), alertID, price);
+
+                responseJSON.put("AlertID", alertID);
+                responseJSON.put("Price", price);
+                responseJSON.put("Error", 0);
+
+            } catch (ExpiredIdentityException e) {
+                responseJSON.put("Error", getErrorNumber(e));
+                responseJSON.put("Reason", e.getLocalizedMessage());
+            } catch (InvalidIdentifierException e) {
+                responseJSON.put("Error", getErrorNumber(e));
+                responseJSON.put("Reason", e.getLocalizedMessage());
+            } catch (InvalidValueException e) {
+                responseJSON.put("Error", getErrorNumber(e));
+                responseJSON.put("Reason", e.getLocalizedMessage());
+            } catch (MissingKeyException e) {
+                responseJSON.put("Error", getErrorNumber(e));
+                responseJSON.put("Reason", e.getLocalizedMessage());
+            } catch (FileNotFoundException e) {
+                responseJSON.put("Error", getErrorNumber(e));
+                responseJSON.put("Reason", e.getLocalizedMessage());
+            } catch (IOException e) {
+                responseJSON.put("Error", getErrorNumber(e));
+                responseJSON.put("Reason", e.getLocalizedMessage());
+            } catch (ClassNotFoundException e) {
+                responseJSON.put("Error", getErrorNumber(e));
+                responseJSON.put("Reason", e.getLocalizedMessage());
+            } catch (SQLException e) {
+                responseJSON.put("Error", getErrorNumber(e));
+                responseJSON.put("Reason", e.getLocalizedMessage());
+            } catch (ParseException e) {
+                responseJSON.put("Error", getErrorNumber(e));
+                responseJSON.put("Reason", e.getLocalizedMessage());
+            }
+            isr.close();
+
+            t.getResponseHeaders().add("Access-Control-Allow-Origin", "*");
+            t.sendResponseHeaders(200, responseJSON.toString().length());
+            OutputStream os = t.getResponseBody();
+            os.write(responseJSON.toString().getBytes());
+            os.close();
+        }
+    }
+
 
     /**
      * GetAlerts
@@ -1618,6 +1711,7 @@ public class Main {
             httpsServer.createContext("/getStock", new GetStock());
             httpsServer.createContext("/getStocks", new GetStocks());
             httpsServer.createContext("/addAlert", new AddAlert());
+            httpsServer.createContext("/modifyAlert", new ModifyAlert());
             httpsServer.createContext("/getAlerts", new GetAlerts());
             httpsServer.createContext("/removeAlert", new RemoveAlert());
 

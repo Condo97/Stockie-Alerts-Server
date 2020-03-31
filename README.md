@@ -335,6 +335,29 @@ Creates an Alert in the database that is associated with a User that is associat
 ```
 
 
+## Modify Alert
+Modifies an Alert price in the database. IdentityToken is included to validate the User and the association with that Alert. 
+
+#### Endpoint:
+`/modifyAlert`
+
+#### POST JSON Contents:
+```json5
+{
+  "IdentityToken": "", //Token associated with the current identity of the User
+  "AlertID": "", //The unique identifier associated with the Alert
+  "Price": "" //The price of the Stock specified that triggers the Alert
+}
+```
+
+#### Response JSON Contents:
+```json5
+{
+  "Error": 0 //53, 57, 50, 51, 41, 40, 59, 1
+}
+```
+
+
 ## Get Alerts
 Gets all of the Alerts associated with the User associated with the Identity associated with the Identity Token.
 
