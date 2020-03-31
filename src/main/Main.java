@@ -1382,9 +1382,11 @@ public class Main {
      * "Price": The updated Price of the Alert
      *
      * Response JSON Contents:
-     * "AlertID": The unique identifier representing the Alert
-     * "Price": The updated Price of the Alert
-     * "Error": Integer indicating the error, 0 if success
+     * "AlertID": The unique identifier of the Alert
+     * "Symbol": The symbol the Alert is acting on
+     * "Price": The price threshold in which the alert activates
+     * "OverPrice": A Boolean value that denotes whether the Price set was over the current stock price or not
+     * "Executed": A Boolean value that denotes whether the Alert has been executed or not
      *
      *
      */
@@ -1413,9 +1415,13 @@ public class Main {
                 double price = extractDouble(json, "Price");
 
                 dr.updateAlert(dr.getUserIDForIdentityToken(identityToken), alertID, price);
+                Alert alert = dr.getAlert(alertID);
 
                 responseJSON.put("AlertID", alertID);
-                responseJSON.put("Price", price);
+                responseJSON.put("Symbol", alert.getSymbol());
+                responseJSON.put("Price", alert.getPrice());
+                responseJSON.put("OverPrice", alert.isOverPrice());
+                responseJSON.put("Executed", alert.isExecuted());
                 responseJSON.put("Error", 0);
 
             } catch (ExpiredIdentityException e) {

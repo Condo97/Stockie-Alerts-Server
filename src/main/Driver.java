@@ -453,6 +453,26 @@ public class Driver {
         return alerts;
     }
 
+    public Alert getAlert(String alertID) throws SQLException, ClassNotFoundException, InvalidIdentifierException {
+        PreparedStatement ps = connection.prepareStatement("select * from Alert where alertID=?");
+        ps.setString(1, alertID);
+        ResultSet rs = ps.executeQuery();
+
+        ArrayList<Alert> alerts = new ArrayList<>();
+
+        while(rs.next()) {
+            String symbol = rs.getString("symbol").toUpperCase();
+            String userID = rs.getString("userID");
+            double price = rs.getDouble("price");
+            boolean overPrice = rs.getBoolean("overPrice");
+            boolean executed = rs.getBoolean("executed");
+
+            return new Alert(alertID, symbol, userID, price, overPrice, executed);
+        }
+
+        return null;
+    }
+
     public void updateAlert(String userID, String alertID, double price) throws SQLException, ClassNotFoundException, InvalidIdentifierException {
         PreparedStatement ps = connection.prepareStatement("update Alert set price=? where alertID=? and userID=?");
         ps.setDouble(1, price);

@@ -353,6 +353,11 @@ Modifies an Alert price in the database. IdentityToken is included to validate t
 #### Response JSON Contents:
 ```json5
 {
+  "AlertID": "", //The unique identifier of the Alert,
+  "Symbol": "", //The symbol the Alert is acting on,
+  "Price": "", //The price threshold in which the alert activates,
+  "OverPrice": "", //A Boolean value that denotes whether the Price set was over the current stock price or not,
+  "Executed": "", //A Boolean value that denotes whether the Alert has been executed or not,
   "Error": 0 //53, 57, 50, 51, 41, 40, 59, 1
 }
 ```
