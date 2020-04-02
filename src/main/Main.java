@@ -1380,6 +1380,7 @@ public class Main {
      * "IdentityToken": User's IdentityToken
      * "AlertID": The unique identifier representing the Alert
      * "Price": The updated Price of the Alert
+     * "Executed": The Boolean value that denotes whether the Alert has been executed or not
      *
      * Response JSON Contents:
      * "AlertID": The unique identifier of the Alert
