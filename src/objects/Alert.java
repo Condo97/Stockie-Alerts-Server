@@ -27,6 +27,7 @@ public class Alert {
         this.userID = userID;
         this.price = price;
         this.overPrice = overPrice;
+        this.executed = executed;
     }
 
     public String getAlertID() {
