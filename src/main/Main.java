@@ -1414,8 +1414,9 @@ public class Main {
                 String identityToken = extractString(json, "IdentityToken");
                 String alertID = extractString(json, "AlertID");
                 double price = extractDouble(json, "Price");
+                boolean executed = extractBoolean(json, "Executed");
 
-                dr.updateAlert(dr.getUserIDForIdentityToken(identityToken), alertID, price);
+                dr.updateAlert(dr.getUserIDForIdentityToken(identityToken), alertID, price, executed);
                 Alert alert = dr.getAlert(alertID);
 
                 responseJSON.put("AlertID", alertID);

@@ -473,9 +473,10 @@ public class Driver {
         return null;
     }
 
-    public void updateAlert(String userID, String alertID, double price) throws SQLException, ClassNotFoundException, InvalidIdentifierException {
-        PreparedStatement ps = connection.prepareStatement("update Alert set price=? where alertID=? and userID=?");
+    public void updateAlert(String userID, String alertID, double price, Boolean executed) throws SQLException, ClassNotFoundException, InvalidIdentifierException {
+        PreparedStatement ps = connection.prepareStatement("update Alert set price=?, executed=? where alertID=? and userID=?");
         ps.setDouble(1, price);
+        ps.setBoolean(2, executed);
         ps.setString(2, alertID);
         ps.setString(3, userID);
 
