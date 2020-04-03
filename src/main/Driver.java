@@ -477,8 +477,8 @@ public class Driver {
         PreparedStatement ps = connection.prepareStatement("update Alert set price=?, executed=? where alertID=? and userID=?");
         ps.setDouble(1, price);
         ps.setBoolean(2, executed);
-        ps.setString(2, alertID);
-        ps.setString(3, userID);
+        ps.setString(3, alertID);
+        ps.setString(4, userID);
 
         ps.executeUpdate();
     }
