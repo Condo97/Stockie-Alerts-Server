@@ -26,6 +26,7 @@ public class Watchlist {
         this.watchlistID = watchlistID;
         this.stocks = stocks;
         this.name = name;
+        this.isDefault = isDefault;
     }
 
     public String getWatchlistID() {
